@@ -1,21 +1,46 @@
-# cutie — Voice Desktop Assistant
+🚀 GIRI – Your Personal Voice Assistant
+GIRI is an AI-powered personal voice assistant built using Python. It listens to your commands, understands your intent, and performs tasks — making your daily life smarter and easier.
 
-A small Python voice assistant that listens to your voice and can:
-- Play songs on YouTube
-- Tell jokes
-- Give the current time
-- Search Wikipedia
-- Open Chrome or VS Code
+✨ Features
+🎤 Voice Recognition – Understands and responds to voice commands in real-time.
+🌐 Web Search – Search the internet instantly using your voice.
+📧 Email Automation – Send emails hands-free.
+📅 Date & Time Queries – Instantly tell you the current time and date.
+📂 File Operations – Open applications and files via simple commands.
+🤖 Conversational AI – Responds naturally to your queries.
 
-## Features
-- Uses `speech_recognition` for voice input
-- Uses `pyttsx3` for text-to-speech
-- `pywhatkit` to play YouTube songs
-- `wikipedia` and `pyjokes` for info and jokes
+Quick demo
+> Say commands like:
+- “Play *[song name]*”
+- “Tell me a joke”
+- “What’s the time?”
+- “Who is Ram Charan or Elon Musk?”
+- “Open Chrome” / “Open VS Code”
 
-## Setup (Windows)
+🛠 Tech Stack
+Programming Language: Python
+Libraries: SpeechRecognition, pyttsx3, datetime, webbrowser, os
+Platform: Cross-platform (Windows/Linux/Mac)
 
-1. Clone the repo:
-   ```bash
-   git clone https://github.com/kartheekarepalle/voice-desktop-assistant.git
-   cd voice-desktop-assistant
+
+🚀 Getting Started
+1️⃣ Clone the Repository
+git clone https://github.com/kartheekarepalle/cutie-Voice-Assistant.git
+
+2️⃣ Install Dependencies
+pip install -r requirements.txt
+
+3️⃣ Run the Application
+python assistant.py
+
+🎯 Future Improvements
+🌍 Multi-language support
+💡 Integration with smart home devices
+📱 Mobile app version
+
+🤝 Contributing
+Pull requests are welcome! If you have suggestions or improvements, please fork the repo and submit a PR.
+
+📬 Contact
+💌 Your Name – https://www.linkedin.com/in/kartheeka-repalle-2139a1363/ | kartheekarepalle313@gmail.com
+📂 GitHub Repository: Cutie – Your Personal Voice Assistant
