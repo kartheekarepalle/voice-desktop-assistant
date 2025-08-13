@@ -14,20 +14,20 @@ voices = engine.getProperty('voices')
 engine.setProperty('voice', voices[1].id)  # Use female voice
 
 def talk(text):
-    print("🎙️ vijaya:", text)
+    print("Cutie:", text)
     engine.say(text)
     engine.runAndWait() 
 
 def take_command():
     listener = sr.Recognizer()
     with sr.Microphone() as source:
-        print("🎧 Listening...")    
+        print("Listening...")    
         listener.adjust_for_ambient_noise(source)
         voice = listener.listen(source)
     try:
         command = listener.recognize_google(voice)
         command = command.lower()
-        print("🗣️ You said:", command)
+        print("You said:", command)
     except sr.UnknownValueError:
         talk("Sorry bro, I didn’t catch that.")
         return ""
@@ -41,17 +41,17 @@ def run_cutie():
 
     if "play" in command:
         song = command.replace("play", "")
-        talk("Playing on YouTube 🎶")
+        talk("Playing on YouTube ")
         pywhatkit.playonyt(song)
 
-    elif "what's the time" in command:
+    elif "what is the time" in command:
         time = datetime.datetime.now().strftime('%I:%M %p')
-        talk(f"It’s {time} ⏰")
+        talk(f"It’s {time}")
 
-    elif "who is uday codes" in command or "who is uday_codes" in command:
+    elif "who is Ram Charan" in command or "who is Konidela Ram Charan" in command:
         info = (
-            "Uday, known as uday_codes on Instagram, is a coding content creator. "
-            "He teaches Python projects in Telugu and runs udaycodes.in 💻"
+            "Charan, known as alwaysramcharan on Instagram, is an Indian Actor and producer. "
+            "He is also knowm as megapower star and acts in pan india movies. "
         )
         talk(info)
 
@@ -69,22 +69,22 @@ def run_cutie():
     elif "open chrome" in command:
         chrome_path = "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
         if os.path.exists(chrome_path):
-            talk("Opening Chrome 🚀")
+            talk("Opening Chrome ")
             os.startfile(chrome_path)
         else:
-            talk("Chrome path not found 😬")
+            talk("Chrome path not found ")
 
     elif "open code" in command or "open vs code" in command:
-        talk("Opening VS Code 💻")
+        talk("Opening VS Code")
         os.system("code")
 
     elif "exit" in command or "stop" in command:
-        talk("Okay bro, see you later 👋")
+        talk("Okay bro, see you later ")
         sys.exit()
 
     elif command != "":
-        talk("I heard you, but I don’t understand that yet 😅")
+        talk("I heard you, but I don’t understand that yet ")
 
-talk("hi! I'm kartheeka – your personal voice assistant. what's on your mind? tell me💡")
+talk("hi! I'm Cutie – your personal voice assistant. what's on your mind? tell me ")
 while True:
     run_cutie()
