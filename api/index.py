@@ -2,8 +2,13 @@ from flask import Flask, request, jsonify
 import datetime
 import os
 import sys
+import json
 
 app = Flask(__name__)
+
+# Configure Flask to properly handle UTF-8 and emojis
+app.json.ensure_ascii = False
+app.config['JSON_AS_ASCII'] = False
 
 # Lazy load heavy dependencies to avoid import errors
 try:
@@ -94,7 +99,9 @@ def process_command(command):
 @app.route('/', methods=['GET'])
 def home():
     """Health check endpoint"""
-    return jsonify({"status": "Cutie Voice Assistant API is running 🎙️", "version": "1.0"})
+    response = jsonify({"status": "Cutie Voice Assistant API is running 🎙️", "version": "1.0"})
+    response.headers['Content-Type'] = 'application/json; charset=utf-8'
+    return response
 
 @app.route('/api/process', methods=['POST'])
 def api_process():
@@ -103,10 +110,15 @@ def api_process():
     command = data.get('command', '').strip() if data else ''
     
     if not command:
-        return jsonify({"status": "error", "message": "Command is required"}), 400
+        response = jsonify({"status": "error", "message": "Command is required"})
+        response.status_code = 400
+        response.headers['Content-Type'] = 'application/json; charset=utf-8'
+        return response
     
     result = process_command(command)
-    return jsonify(result)
+    response = jsonify(result)
+    response.headers['Content-Type'] = 'application/json; charset=utf-8'
+    return response
 
 @app.route('/api/command', methods=['GET'])
 def api_command_get():
@@ -114,18 +126,29 @@ def api_command_get():
     command = request.args.get('text', '').strip()
     
     if not command:
-        return jsonify({"status": "error", "message": "text parameter is required"}), 400
+        response = jsonify({"status": "error", "message": "text parameter is required"})
+        response.status_code = 400
+        response.headers['Content-Type'] = 'application/json; charset=utf-8'
+        return response
     
     result = process_command(command)
-    return jsonify(result)
+    response = jsonify(result)
+    response.headers['Content-Type'] = 'application/json; charset=utf-8'
+    return response
 
 @app.errorhandler(404)
 def not_found(error):
-    return jsonify({"status": "error", "message": "Endpoint not found"}), 404
+    response = jsonify({"status": "error", "message": "Endpoint not found"})
+    response.status_code = 404
+    response.headers['Content-Type'] = 'application/json; charset=utf-8'
+    return response
 
 @app.errorhandler(500)
 def internal_error(error):
-    return jsonify({"status": "error", "message": "Internal server error"}), 500
+    response = jsonify({"status": "error", "message": "Internal server error"})
+    response.status_code = 500
+    response.headers['Content-Type'] = 'application/json; charset=utf-8'
+    return response
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
