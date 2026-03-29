@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template_string
 import datetime
 import os
 import sys
@@ -98,10 +98,239 @@ def process_command(command):
 
 @app.route('/', methods=['GET'])
 def home():
-    """Health check endpoint"""
-    response = jsonify({"status": "Cutie Voice Assistant API is running 🎙️", "version": "1.0"})
-    response.headers['Content-Type'] = 'application/json; charset=utf-8'
-    return response
+    """Homepage with API documentation"""
+    html = """
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Cutie - Voice Assistant API</title>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+            body {
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                min-height: 100vh;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: 20px;
+            }
+            .container {
+                background: white;
+                border-radius: 20px;
+                box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+                max-width: 800px;
+                width: 100%;
+                padding: 40px;
+            }
+            .header {
+                text-align: center;
+                margin-bottom: 30px;
+            }
+            .logo {
+                font-size: 48px;
+                margin-bottom: 10px;
+            }
+            h1 {
+                color: #333;
+                font-size: 32px;
+                margin-bottom: 10px;
+            }
+            .status {
+                display: inline-block;
+                background: #4CAF50;
+                color: white;
+                padding: 8px 16px;
+                border-radius: 20px;
+                font-size: 14px;
+                font-weight: bold;
+                margin-top: 10px;
+            }
+            .section {
+                margin: 30px 0;
+                padding: 20px;
+                background: #f5f5f5;
+                border-radius: 10px;
+            }
+            h2 {
+                color: #667eea;
+                font-size: 20px;
+                margin-bottom: 15px;
+                border-bottom: 2px solid #667eea;
+                padding-bottom: 10px;
+            }
+            .endpoint {
+                background: white;
+                padding: 15px;
+                margin: 10px 0;
+                border-left: 4px solid #667eea;
+                border-radius: 5px;
+            }
+            .method {
+                display: inline-block;
+                padding: 4px 8px;
+                border-radius: 4px;
+                font-weight: bold;
+                font-size: 12px;
+                margin-right: 10px;
+            }
+            .method.get {
+                background: #61affe;
+                color: white;
+            }
+            .method.post {
+                background: #49cc90;
+                color: white;
+            }
+            .code {
+                background: #2d2d2d;
+                color: #f8f8f2;
+                padding: 12px;
+                border-radius: 5px;
+                overflow-x: auto;
+                font-family: 'Courier New', monospace;
+                font-size: 12px;
+                margin: 10px 0;
+            }
+            .commands {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+            .command {
+                background: white;
+                padding: 12px;
+                border-radius: 5px;
+                border-left: 3px solid #764ba2;
+            }
+            .command-name {
+                font-weight: bold;
+                color: #764ba2;
+            }
+            .command-example {
+                font-size: 12px;
+                color: #666;
+                margin-top: 5px;
+            }
+            .footer {
+                text-align: center;
+                margin-top: 30px;
+                color: #666;
+                font-size: 14px;
+            }
+            .btn {
+                display: inline-block;
+                background: #667eea;
+                color: white;
+                padding: 12px 24px;
+                border-radius: 5px;
+                text-decoration: none;
+                margin-top: 15px;
+                transition: background 0.3s;
+            }
+            .btn:hover {
+                background: #764ba2;
+            }
+            @media (max-width: 600px) {
+                .container {
+                    padding: 20px;
+                }
+                h1 {
+                    font-size: 24px;
+                }
+                .commands {
+                    grid-template-columns: 1fr;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="header">
+                <div class="logo">🎙️</div>
+                <h1>Cutie Voice Assistant API</h1>
+                <div class="status">🟢 Online</div>
+                <p style="color: #666; margin-top: 10px;">AI-powered voice command processing</p>
+            </div>
+
+            <div class="section">
+                <h2>📡 API Endpoints</h2>
+                
+                <div class="endpoint">
+                    <span class="method get">GET</span>
+                    <strong>/api/command</strong>
+                    <div class="code">GET /api/command?text=what's%20the%20time</div>
+                    <p style="margin-top: 10px; color: #666;">Query parameter: <code>text</code> - the voice command to process</p>
+                </div>
+
+                <div class="endpoint">
+                    <span class="method post">POST</span>
+                    <strong>/api/process</strong>
+                    <div class="code">POST /api/process<br>Content-Type: application/json<br><br>{"command": "tell me a joke"}</div>
+                    <p style="margin-top: 10px; color: #666;">JSON body: <code>{"command": "your command here"}</code></p>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>🎯 Supported Commands</h2>
+                <div class="commands">
+                    <div class="command">
+                        <div class="command-name">⏰ Time</div>
+                        <div class="command-example">"what's the time"</div>
+                    </div>
+                    <div class="command">
+                        <div class="command-name">📅 Date</div>
+                        <div class="command-example">"what's the date"</div>
+                    </div>
+                    <div class="command">
+                        <div class="command-name">😂 Joke</div>
+                        <div class="command-example">"tell me a joke"</div>
+                    </div>
+                    <div class="command">
+                        <div class="command-name">🔍 Search</div>
+                        <div class="command-example">"who is Elon Musk"</div>
+                    </div>
+                    <div class="command">
+                        <div class="command-name">🎵 Music</div>
+                        <div class="command-example">"play despacito"</div>
+                    </div>
+                    <div class="command">
+                        <div class="command-name">📱 App</div>
+                        <div class="command-example">"open chrome"</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>✨ Example Response</h2>
+                <div class="code">{<br>  "status": "success",<br>  "command": "what's the time",<br>  "response": "It's 06:32 PM ⏰"<br>}</div>
+            </div>
+
+            <div class="section">
+                <h2>📚 Documentation</h2>
+                <p style="color: #666; margin-bottom: 15px;">
+                    For more information and examples, visit the project repository:
+                </p>
+                <a href="https://github.com/kartheekarepalle/voice-desktop-assistant" target="_blank" class="btn">
+                    View on GitHub 🔗
+                </a>
+            </div>
+
+            <div class="footer">
+                <p>Cutie Voice Assistant API v1.0</p>
+                <p style="margin-top: 5px; color: #999;">Built with Flask & Deployed on Vercel</p>
+            </div>
+        </div>
+    </body>
+    </html>
+    """
+    return render_template_string(html)
 
 @app.route('/api/process', methods=['POST'])
 def api_process():
